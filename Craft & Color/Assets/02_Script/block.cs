@@ -10,10 +10,24 @@ public class block : MonoBehaviour {
 
     void Start () {
         //This time we are using "PointEffector2D" component.
-        this.pe = this.gameObject.GetComponent<PointEffector2D>(); 
+        this.pe = this.gameObject.GetComponentInChildren<PointEffector2D>(); 
     }
-	
-	
+
+    public void liftBlock(Transform lifterTransform)
+    {        
+        transform.parent = lifterTransform;
+    }
+
+    public void downBlock(Transform lifterTransform)
+    {
+        Vector3 PosBox = transform.localPosition;
+        transform.localPosition = PosBox;
+
+        transform.parent = null;
+
+    }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == this.tag)

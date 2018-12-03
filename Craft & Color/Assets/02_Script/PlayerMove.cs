@@ -18,8 +18,12 @@ public class PlayerMove : MonoBehaviour {
     public int key = 0;                 // Left / right input control
     public int keyStatus;
     public bool canHave = false;
+    public bool having = false;
     public Collider2D blockCol;
+    public GameObject ChaildBlock;
     public Sprite standing, running, jumping;
+    public AudioClip[] audioClips;
+    private AudioSource audioSource;
 
     string state;                // プレイヤーの状態管理 Player state management
     string prevState;            // 前の状態を保存 Save previous state
@@ -33,6 +37,7 @@ public class PlayerMove : MonoBehaviour {
     void Start()
     {
         this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+        audioSource = gameObject.GetComponent<AudioSource>();
         //this.animator = GetComponent<Animator>();
         
     }
@@ -148,6 +153,8 @@ public class PlayerMove : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetButtonDown("Jump")) 
             {
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
                 this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
                 this.rb.AddForce(transform.up * this.jumpForce);
 				//se01.PlayOneShot (se01.clip);
@@ -175,26 +182,66 @@ public class PlayerMove : MonoBehaviour {
     void Havingblock()
     {
 
-        if (Input.GetMouseButton(0))//マウス右ボタンをクリック Click the right mouse button
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (canHave)
+            if (canHave == true && having == false)
             {
-                //blockCol.GetComponentInParent<GameObject>();//transform.parent = this.transform;
-                Debug.Log(blockCol.GetComponentInParent<GameObject>());
+                Debug.Log("○ボタン押したで");
+                blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.7f, 0);//this.transform.position;
+                blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = false;
+                blockCol.gameObject.GetComponentInParent<block>().liftBlock(this.transform);
+                having = true;
+            }
+
+            else if(having && isGround)
+            {
+                blockCol.gameObject.GetComponentInParent<block>().downBlock(this.transform);
+                blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.7f, 0);//this.transform.position;
+                blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+                //blockCol.GetComponent<Transform>().transform.parent = null;
+                having = false;
+
+                //Jump
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+                this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
+                this.rb.AddForce(transform.up * this.jumpForce);
+                //se01.PlayOneShot (se01.clip);
+                isGround = false;
             }
         }
+        
     }
 
     // 着地判定 Landing determination
     void OnCollisionEnter2D(Collision2D col)
     {
-        //if (col.gameObject.tag == "ground")
-        //{
-        if (!isGround)
-                isGround = true;
-        //}
+        if (!isGround)isGround = true;
 
+        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green")
 
+        {
+            if (having == false){
+                canHave = true;
+                blockCol = col.collider;
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green")
+
+        {
+            if(having == false) canHave = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        canHave = false;
     }
 
     //private void OnCollisionExit2D(Collision2D col)
@@ -208,23 +255,11 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canHave == false)
-        {
-
-            if (collision.tag == "red" || collision.tag == "blue" || collision.tag == "green")
-            {
-                canHave = true;
-                blockCol = collision;
-
-            }
-        }
+      
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "red" || collision.tag == "blue" || collision.tag == "green")
-        {
-            canHave = false;
-        }
+    
     }
 }
