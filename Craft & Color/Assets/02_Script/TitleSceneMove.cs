@@ -14,9 +14,9 @@ public class TitleSceneMove : MonoBehaviour {
     void Update()
     {
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("X"))
         {
-            SceneManager.LoadScene("Scene_Yusuke");
+            SceneManager.LoadScene("Stage1");
         }
     }
 

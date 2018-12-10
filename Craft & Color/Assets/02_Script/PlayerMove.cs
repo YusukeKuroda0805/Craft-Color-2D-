@@ -134,7 +134,7 @@ public class PlayerMove : MonoBehaviour {
                    
                     stateEffect = 1f;
                     //GetComponent<SpriteRenderer> ().flipX = true;
-                    transform.localScale = new Vector3(2 * key , transform.localScale.y, 1); // 向きに応じてキャラクターのspriteを反転 Flip character sprite according to orientation
+                    transform.localScale = new Vector3(1.5f * key , transform.localScale.y, 1); // 向きに応じてキャラクターのspriteを反転 Flip character sprite according to orientation
                     break;
                 default:
                    
@@ -151,7 +151,7 @@ public class PlayerMove : MonoBehaviour {
         // 設置している時にSpaceキー押下でジャンプ Jump by pressing Space key when installing
         if (isGround)
         {
-            if (Input.GetKey(KeyCode.UpArrow) || Input.GetButtonDown("Jump")) 
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetButtonDown("X")) 
             {
                 audioSource.clip = audioClips[0];
                 audioSource.Play();
@@ -182,12 +182,12 @@ public class PlayerMove : MonoBehaviour {
     void Havingblock()
     {
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("square"))
         {
             if (canHave == true && having == false)
             {
-                Debug.Log("○ボタン押したで");
-                blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+                Debug.Log("□ボタン押したで");
+                //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
                 blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.7f, 0);//this.transform.position;
                 blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = false;
                 blockCol.gameObject.GetComponentInParent<block>().liftBlock(this.transform);
@@ -197,7 +197,7 @@ public class PlayerMove : MonoBehaviour {
             else if(having && isGround)
             {
                 blockCol.gameObject.GetComponentInParent<block>().downBlock(this.transform);
-                blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+                //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
                 blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.7f, 0);//this.transform.position;
                 blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = true;
                 //blockCol.GetComponent<Transform>().transform.parent = null;

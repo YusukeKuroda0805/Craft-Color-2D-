@@ -180,7 +180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Retry : round button'
+  m_Text: 'Retry : ''X'' button'
 --- !u!222 &506673731
 CanvasRenderer:
   m_ObjectHideFlags: 0

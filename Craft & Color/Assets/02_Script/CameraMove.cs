@@ -30,11 +30,11 @@ public class CameraMove : MonoBehaviour {
 
         Vector3 fixYpos = new Vector3(player.x, campos.y - offset.y, player.z);
 
-        this.transform.position = fixYpos + offset;
+        this.transform.position = player + offset;
 
-        if(player.x < firstPosition.x)
-        {
+        //if(player.x < firstPosition.x)
+        //{
             
-        }
+        //}
     }
 }
