@@ -14,14 +14,18 @@ public class PlayerMove : MonoBehaviour {
     public float runForce = 1.5f;       // 走り始めに加える力 Power to start running
     public float runSpeed = 0.5f;       // 走っている間の速度 Speed ​​while running
     public float runThreshold = 2.2f;   // 速度切り替え判定のための閾値 Threshold for speed switching determination
+    public float CCCount = 1;    //色切り替えに使用
     public bool isGround = true;        // 地面と接地しているか管理するフラグ Flag to manage whether it is grounded and ground
     public int key = 0;                 // Left / right input control
     public int keyStatus;
     public bool canHave = false;
     public bool having = false;
+    public bool Toseparate = false;
+    public Color NowColor;
     public Collider2D blockCol;
     public GameObject ChaildBlock;
-    public Sprite standing, running, jumping;
+    public Sprite standing, running, jumping, standb,runb,jumpb,separate;
+    public Sprite redb, greenb, blueb, purpleb, orangeb, yellowb;
     public AudioClip[] audioClips;
     private AudioSource audioSource;
 
@@ -53,11 +57,13 @@ public class PlayerMove : MonoBehaviour {
         Move();                 // ④ 入力に応じて移動する
 
         Havingblock();  //ブロックを持つためのメソッド
+        ColorChange();  //ブロックの色を変えるためのメソッド
     }
 
     void GetInputKey()
     {
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = running;
+        if (having) this.gameObject.GetComponent<SpriteRenderer>().sprite = runb;
+        else this.gameObject.GetComponent<SpriteRenderer>().sprite = running;
         key = 0;
 
         if (Input.GetAxisRaw("Horizontal") < 0) {
@@ -90,11 +96,12 @@ public class PlayerMove : MonoBehaviour {
             if (key == 0)
             {
                 state = "IDLE"; //待機状態 Standby state
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = standing;
+                if(having) this.gameObject.GetComponent<SpriteRenderer>().sprite = standb;
+                else this.gameObject.GetComponent<SpriteRenderer>().sprite = standing;
             }
             else
             {
-                state = "RUN"; ;
+                state = "RUN";
             }
             // 空中にいる場合 When in the air
         }
@@ -104,13 +111,17 @@ public class PlayerMove : MonoBehaviour {
             if (rb.velocity.y > 0)
             {
                 state = "JUMP";
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
+                if (having) this.gameObject.GetComponent<SpriteRenderer>().sprite = jumpb;
+                else if (Toseparate)this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
+                else this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
                 // 下降中 Falling
             }
             else if (rb.velocity.y < 0)
             {
                 state = "FALL";
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
+                if (having) this.gameObject.GetComponent<SpriteRenderer>().sprite = jumpb;
+                else if (Toseparate) this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
+                else this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
             }
         }
     }
@@ -134,7 +145,7 @@ public class PlayerMove : MonoBehaviour {
                    
                     stateEffect = 1f;
                     //GetComponent<SpriteRenderer> ().flipX = true;
-                    transform.localScale = new Vector3(1.5f * key , transform.localScale.y, 1); // 向きに応じてキャラクターのspriteを反転 Flip character sprite according to orientation
+                    transform.localScale = new Vector3(2.4f * key , transform.localScale.y, 1); // 向きに応じてキャラクターのspriteを反転 Flip character sprite according to orientation
                     break;
                 default:
                    
@@ -151,11 +162,14 @@ public class PlayerMove : MonoBehaviour {
         // 設置している時にSpaceキー押下でジャンプ Jump by pressing Space key when installing
         if (isGround)
         {
+            if (Toseparate) Toseparate = false;
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetButtonDown("X")) 
             {
                 audioSource.clip = audioClips[0];
                 audioSource.Play();
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
+                if (having) this.gameObject.GetComponent<SpriteRenderer>().sprite = jumpb;
+                else if (Toseparate)this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
+                else this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
                 this.rb.AddForce(transform.up * this.jumpForce);
 				//se01.PlayOneShot (se01.clip);
                 isGround = false;
@@ -182,37 +196,134 @@ public class PlayerMove : MonoBehaviour {
     void Havingblock()
     {
 
-        if (Input.GetButtonDown("square"))
+        if (Input.GetButtonDown("Square"))
         {
             if (canHave == true && having == false)
             {
                 Debug.Log("□ボタン押したで");
                 //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.7f, 0);//this.transform.position;
+                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y-0.8f, 0);//this.transform.position;
                 blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = false;
                 blockCol.gameObject.GetComponentInParent<block>().liftBlock(this.transform);
+                blockCol.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                NowColor = blockCol.gameObject.GetComponent<SpriteRenderer>().color;
                 having = true;
+
+                //持っているブロックによって見た目を変える
+
+                if (blockCol.tag == "red")
+                {
+                    standb = redb;
+                    CCCount = 2;
+                }
+                else if (blockCol.tag == "orange")
+                {
+                    standb = orangeb;
+                    CCCount = 1;
+                }
+                else if (blockCol.tag == "blue")
+                {
+                    standb = blueb;
+                    CCCount = 4;
+                }
+                else if (blockCol.tag == "green")
+                {
+                    standb = greenb;
+                    CCCount = 3;
+                }
+                else if (blockCol.tag == "purple")
+                {
+                    standb = purpleb;
+                    CCCount = 5;
+                }
+                else if (blockCol.tag == "yellow")
+                {
+                    standb = yellowb;
+                    CCCount = 6;
+                }
             }
 
             else if(having && isGround)
             {
                 blockCol.gameObject.GetComponentInParent<block>().downBlock(this.transform);
                 //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
-                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.7f, 0);//this.transform.position;
+                blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y -2.0f, 0);//this.transform.position;
                 blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+                blockCol.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                blockCol.gameObject.GetComponent<SpriteRenderer>().color = NowColor;
+
                 //blockCol.GetComponent<Transform>().transform.parent = null;
                 having = false;
 
                 //Jump
                 audioSource.clip = audioClips[0];
                 audioSource.Play();
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = jumping;
+                this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
                 this.rb.AddForce(transform.up * this.jumpForce);
                 //se01.PlayOneShot (se01.clip);
                 isGround = false;
+                Toseparate = true;
             }
         }
         
+    }
+
+    //ブロックを持った状態だと、色を変えられる
+    void ColorChange()
+    {
+        if (having && Input.GetButtonDown("Triangle"))
+        {
+            audioSource.clip = audioClips[1];
+            audioSource.Play();
+
+            if (CCCount == 1)
+            {
+                NowColor = new Color(1, 0.6352941f, 0.6352941f, 1);
+                blockCol.gameObject.tag = "red";
+                standb = redb;
+                CCCount += 1;
+            }
+
+            else　if (CCCount == 2)
+            {
+                NowColor = new Color(0.7372549f, 0.937255f, 0.7019608f, 1);
+                blockCol.gameObject.tag = "green";
+                standb = greenb;
+                CCCount += 1;
+            }
+
+            else if (CCCount == 3)
+            {
+                NowColor = new Color(0.7411765f, 0.8666667f, 1, 1);
+                blockCol.gameObject.tag = "blue";
+                standb = blueb;
+                CCCount += 1;
+            }
+
+            else if (CCCount == 4)
+            {
+                NowColor = new Color(0.9058824f, 0.7019608f, 0.937255f, 1);
+                blockCol.gameObject.tag = "purple";
+                standb = purpleb;
+                CCCount += 1;
+            }
+
+            else if (CCCount == 5)
+            {
+                NowColor = new Color(1, 1, 0.7411765f, 1);
+                blockCol.gameObject.tag = "yellow";
+                standb = yellowb;
+                CCCount += 1;
+            }
+            else if (CCCount == 6)
+            {
+                NowColor = new Color(1, 0.7294118f, 0.4235294f, 1);
+                blockCol.gameObject.tag = "orange";
+                standb = orangeb;
+                CCCount = 1;
+            }
+
+        }
     }
 
     // 着地判定 Landing determination
@@ -220,22 +331,25 @@ public class PlayerMove : MonoBehaviour {
     {
         if (!isGround)isGround = true;
 
-        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green")
+        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green" || col.collider.tag == "yellow" 
+            || col.collider.tag == "purple" || col.collider.tag == "orange")
 
         {
             if (having == false){
                 canHave = true;
                 blockCol = col.collider;
+
             }
         }
     }
 
     private void OnCollisionStay2D(Collision2D col)
     {
-        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green")
+        if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green" || col.collider.tag == "yellow" 
+            || col.collider.tag == "purple" || col.collider.tag == "orange")
 
         {
-            if(having == false) canHave = true;
+            if (having == false) canHave = true;
         }
     }
 
@@ -244,22 +358,5 @@ public class PlayerMove : MonoBehaviour {
         canHave = false;
     }
 
-    //private void OnCollisionExit2D(Collision2D col)
-    //{
-    ///if (col.gameObject.tag == "ground")
-    //{
-    //if (isGround)
-    //isGround = false;
-    //}
-    //}
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-      
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
     
-    }
 }

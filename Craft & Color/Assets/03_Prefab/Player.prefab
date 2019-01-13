@@ -39,8 +39,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634122980750216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.92, y: -2.26, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -4.92, y: -1.68, z: 0}
+  m_LocalScale: {x: 2.4, y: 2.4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,14 +81,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.3, y: 1.14}
-    newSize: {x: 1, y: 2}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.14}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!82 &82929175294495022
 AudioSource:
@@ -218,19 +218,34 @@ MonoBehaviour:
   jumpForce: 50
   jumpThreshold: 1
   runForce: 6
-  runSpeed: 2.5
+  runSpeed: 4
   runThreshold: 2.2
+  CCCount: 1
   isGround: 1
   key: 0
   keyStatus: 0
   canHave: 0
+  having: 0
+  Toseparate: 0
+  NowColor: {r: 0, g: 0, b: 0, a: 0}
   blockCol: {fileID: 0}
+  ChaildBlock: {fileID: 0}
   standing: {fileID: 21300000, guid: 753228897286e3b4887515b0b6726b9d, type: 3}
   running: {fileID: 21300000, guid: 65fdc5eeb1044254985fa88d8525dadb, type: 3}
   jumping: {fileID: 21300000, guid: c1f045c024b13004b827191e5a8734f6, type: 3}
+  standb: {fileID: 21300000, guid: 08c820335e0faf9429776b8df092f57b, type: 3}
+  runb: {fileID: 21300000, guid: 55a395c9c181b764585c7fea15a99b88, type: 3}
+  jumpb: {fileID: 21300000, guid: b89c5c5ae38b0d34a942d3c250c9e092, type: 3}
+  separate: {fileID: 21300000, guid: 53395f75d8ddb8d409f8f33026919203, type: 3}
+  redb: {fileID: 21300000, guid: dc40e0c862d67e6489c3d4fc256af7bc, type: 3}
+  greenb: {fileID: 21300000, guid: 80ab60988164128448ea946182c8accd, type: 3}
+  blueb: {fileID: 21300000, guid: f62ae039fb84dfb47843d25afeb59b6f, type: 3}
+  purpleb: {fileID: 21300000, guid: a9bc32a2290179a4e92e3ed648b7468e, type: 3}
+  orangeb: {fileID: 21300000, guid: c1ff737edfde167438306ee61a6e8eb7, type: 3}
+  yellowb: {fileID: 21300000, guid: 8efb80336ef13ca488a96dad62bb5987, type: 3}
   audioClips:
   - {fileID: 8300000, guid: 9eb7cdc77d14e7f418969c51ea7bf33b, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: e7e3e3bf73627b0468a73007a6289791, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -273,13 +288,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 753228897286e3b4887515b0b6726b9d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
