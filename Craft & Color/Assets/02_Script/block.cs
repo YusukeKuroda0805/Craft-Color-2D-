@@ -55,55 +55,47 @@ public class block : MonoBehaviour {
             pe.forceMagnitude = attraction;
             Debug.Log(this.name + "Attraction");
         }
-        else if (col.tag != this.tag)
+        else if (col.tag == "red" || col.tag == "blue" || col.tag == "green" || col.tag == "yellow"
+           || col.tag == "purple" || col.tag == "orange")
         {
             pe.forceMagnitude = repulsion;
             Debug.Log(this.name + "Repulsion");
         }
+        else
+        {
+            pe.forceMagnitude = 0;
+            Debug.Log(this.name + "No power is working");
+        }
+
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.tag == this.tag)
+        if (col.tag == this.tag)
         {
             pe.forceMagnitude = attraction;
             Debug.Log(this.name + "Attraction");
         }
-        else if (collision.tag != this.tag)
+        else if (col.tag == "red" || col.tag == "blue" || col.tag == "green" || col.tag == "yellow"
+           || col.tag == "purple" || col.tag == "orange")
         {
             pe.forceMagnitude = repulsion;
             Debug.Log(this.name + "Repulsion");
+        }
+        else
+        {
+            //pe.forceMagnitude = 0;
+            //Debug.Log(this.name + "No power is working");
         }
         //MagneticManipulation(collision);
 
         //if (collision.tag == this.tag) TTB = true;
     }
 
-    
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.tag == this.tag)
-        {
-            pe.forceMagnitude = attraction;
-            Debug.Log(this.name + "Attraction");
-        }
-        else if (collision.tag != this.tag)
-        {
-            pe.forceMagnitude = repulsion;
-            Debug.Log(this.name + "Repulsion");
-        }
-
-        else
-        {
-            pe.forceMagnitude = 0;
-            Debug.Log(this.name + "No power is working");
-        }
-    }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         //if (collision.tag == this.tag) TTB = false;
-        pe.forceMagnitude = 0;
-        Debug.Log(this.name + "No power is working");
+        //pe.forceMagnitude = 0;
+        //Debug.Log(this.name + "No power is working");
     }
 }

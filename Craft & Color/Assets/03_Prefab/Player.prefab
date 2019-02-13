@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634122980750216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.92, y: -1.68, z: 0}
+  m_LocalPosition: {x: 1.1599998, y: -1.68, z: 0}
   m_LocalScale: {x: 2.4, y: 2.4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,7 +88,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8, y: 1}
   m_EdgeRadius: 0
 --- !u!82 &82929175294495022
 AudioSource:
@@ -238,14 +238,26 @@ MonoBehaviour:
   jumpb: {fileID: 21300000, guid: b89c5c5ae38b0d34a942d3c250c9e092, type: 3}
   separate: {fileID: 21300000, guid: 53395f75d8ddb8d409f8f33026919203, type: 3}
   redb: {fileID: 21300000, guid: dc40e0c862d67e6489c3d4fc256af7bc, type: 3}
+  redb_r: {fileID: 21300000, guid: fde795850baaef14aa9cf87e6c17da64, type: 3}
+  redb_j: {fileID: 21300000, guid: 31f36a71073a2d34eab9d658c76ec613, type: 3}
   greenb: {fileID: 21300000, guid: 80ab60988164128448ea946182c8accd, type: 3}
+  greenb_r: {fileID: 21300000, guid: 2722e45397209a1459d04db7dba7c532, type: 3}
+  greenb_j: {fileID: 21300000, guid: a91ac40bf1a74dc4ea29dc1e734a4e0c, type: 3}
   blueb: {fileID: 21300000, guid: f62ae039fb84dfb47843d25afeb59b6f, type: 3}
+  blureb_r: {fileID: 21300000, guid: 0ae4629b257fd74499d05f9751ccdde7, type: 3}
+  blueb_j: {fileID: 21300000, guid: 3351501d29c77a34eb270e1d2d2e7a3f, type: 3}
   purpleb: {fileID: 21300000, guid: a9bc32a2290179a4e92e3ed648b7468e, type: 3}
+  purpleb_r: {fileID: 21300000, guid: c6d20403d5c0af7408f304060e9771fb, type: 3}
+  purpleb_j: {fileID: 21300000, guid: 592e7716d5c41a64bb1919793e9f5d7f, type: 3}
   orangeb: {fileID: 21300000, guid: c1ff737edfde167438306ee61a6e8eb7, type: 3}
+  orangeb_r: {fileID: 21300000, guid: 3a1b3f8151e2f774e8073451099baa9a, type: 3}
+  orangeb_j: {fileID: 21300000, guid: 1f099c9a7635b9441833cd2e868550ff, type: 3}
   yellowb: {fileID: 21300000, guid: 8efb80336ef13ca488a96dad62bb5987, type: 3}
+  yellowb_r: {fileID: 21300000, guid: c05ba84055c68024487dcf348df9bc25, type: 3}
+  yellowb_j: {fileID: 21300000, guid: 8453b6ee69cda7647b4da98e3af020ea, type: 3}
   audioClips:
   - {fileID: 8300000, guid: 9eb7cdc77d14e7f418969c51ea7bf33b, type: 3}
-  - {fileID: 8300000, guid: e7e3e3bf73627b0468a73007a6289791, type: 3}
+  - {fileID: 8300000, guid: 8d6214f2c04eae74c952ff0d5416fb6a, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

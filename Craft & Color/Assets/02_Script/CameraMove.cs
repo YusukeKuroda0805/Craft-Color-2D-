@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMove : MonoBehaviour {
+public class CameraMove : MonoBehaviour
+{
 
-    public Vector3 player;       
+    public Vector3 player;
     public Vector3 firstPosition;
-    private Vector3 offset;         
-    private Vector3 campos;       
+    private Vector3 offset;
+    private Vector3 campos;
+    public float speed = 1f;
+    public float zoomSpeed = 1f;
 
+    private bool zoom = false;
+    public Camera DesiredView { get; set; }
+
+    private Camera playerFollowCamera;
+    private float playerFollowOrthographicSize;
 
     void Start()
     {
@@ -20,6 +28,25 @@ public class CameraMove : MonoBehaviour {
         //はじめのカメラポジションの高さを所得しておく
         // I will earn the height of the first camera position
         campos.y = GetComponent<Transform>().position.y;
+
+        playerFollowCamera = this.GetComponent<Camera>();
+        playerFollowOrthographicSize = playerFollowCamera.orthographicSize;
+        DesiredView = playerFollowCamera;
+    }
+    public bool FollowPlayer
+    {
+        get
+        {
+            return playerFollowCamera == DesiredView;
+        }
+    }
+
+    public bool FollowCustomPosition
+    {
+        get
+        {
+            return playerFollowCamera != DesiredView;
+        }
     }
 
     void LateUpdate()
@@ -30,11 +57,50 @@ public class CameraMove : MonoBehaviour {
 
         Vector3 fixYpos = new Vector3(player.x, campos.y - offset.y, player.z);
 
-        this.transform.position = player + offset;
+        Vector3 desiredViewOnPlayerPosition = player + offset;
+
+        float step = speed * Time.deltaTime; // calculate distance to move
+        float zoomStep = zoomSpeed * Time.deltaTime; // calculate distance to zoom
+
+
+        if (FollowPlayer)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, desiredViewOnPlayerPosition, step);
+            //playerFollowCamera.orthographicSize = playerFollowOrthographicSize;
+            if(zoom) playerFollowCamera.orthographicSize = Mathf.Lerp(playerFollowCamera.orthographicSize, playerFollowOrthographicSize, zoomSpeed)*3;
+            else playerFollowCamera.orthographicSize = Mathf.Lerp(playerFollowCamera.orthographicSize, playerFollowOrthographicSize, zoomSpeed);
+        }
+        else if (FollowCustomPosition)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, DesiredView.transform.position, step);
+            // playerFollowCamera.orthographicSize = DesiredView.orthographicSize;
+
+            if (zoom) playerFollowCamera.orthographicSize = Mathf.Lerp(playerFollowCamera.orthographicSize, DesiredView.orthographicSize, zoomSpeed)*3;
+            else playerFollowCamera.orthographicSize = Mathf.Lerp(playerFollowCamera.orthographicSize, DesiredView.orthographicSize, zoomSpeed);
+
+        }
+
+
 
         //if(player.x < firstPosition.x)
         //{
-            
+
         //}
     }
+
+    //カメラのズームアウトの処理
+    public void zoomOut()
+    {
+        Debug.Log(playerFollowCamera.orthographicSize);
+        zoom = true;
+        //playerFollowCamera.orthographicSize = 1f;
+    }
+
+    //カメラのズームを元に戻す
+    public void defaultAngle()
+    {
+        zoom = false;
+    }
+
+
 }
