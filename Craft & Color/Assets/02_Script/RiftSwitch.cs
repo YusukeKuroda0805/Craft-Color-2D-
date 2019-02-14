@@ -17,8 +17,9 @@ public class RiftSwitch : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.tag == Color) {
-            ColorRift1.gameObject.SetActive(false);
             ColorRift2.gameObject.SetActive(true);
+            if(ColorRift1!= null) ColorRift1.gameObject.SetActive(false);
+            
         }
     }
 

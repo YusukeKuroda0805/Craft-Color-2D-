@@ -264,7 +264,7 @@ public class PlayerMove : MonoBehaviour {
                     blockCol.gameObject.GetComponentInParent<block>().downBlock(this.transform);
                     //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, 0);
-                    blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.0f , 0);//this.transform.position;
+                    blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.0f, 0);//this.transform.position;
                     blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = true;
                     blockCol.gameObject.GetComponent<SpriteRenderer>().enabled = true;
                     blockCol.gameObject.GetComponent<SpriteRenderer>().color = NowColor;
@@ -281,10 +281,12 @@ public class PlayerMove : MonoBehaviour {
                     isGround = false;
                     Toseparate = true;
                 }
+
                 else
                 {
                     blockCol.gameObject.GetComponentInParent<block>().downBlock(this.transform);
                     //blockCol.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, 0);
                     blockCol.gameObject.GetComponent<Transform>().transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 2.0f, 0);//this.transform.position;
                     blockCol.gameObject.GetComponent<Rigidbody2D>().simulated = true;
                     blockCol.gameObject.GetComponent<SpriteRenderer>().enabled = true;
@@ -293,8 +295,18 @@ public class PlayerMove : MonoBehaviour {
                     //blockCol.GetComponent<Transform>().transform.parent = null;
                     having = false;
 
+                    //Jump
+                    audioSource.clip = audioClips[0];
+                    audioSource.Play();
                     this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
+                    this.rb.AddForce(transform.up * this.jumpForce * 0.8f);
+                    //se01.PlayOneShot (se01.clip);
+                    isGround = true;
                     Toseparate = true;
+
+
+                    //this.gameObject.GetComponent<SpriteRenderer>().sprite = separate;
+                    //Toseparate = true;
 
                 }
                
@@ -306,7 +318,12 @@ public class PlayerMove : MonoBehaviour {
     //ブロックを持った状態だと、色を変えられる
     void ColorChange()
     {
-        if (having && Input.GetButtonDown("Triangle"))
+        if (having && Input.GetButtonDown("Tri" +
+            "" +
+            "" +
+            "" +
+            "" +
+            "angle"))
         {
             audioSource.clip = audioClips[1];
             audioSource.Play();
@@ -392,6 +409,8 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnCollisionStay2D(Collision2D col)
     {
+        if (!isGround) isGround = true;
+
         if (col.collider.tag == "red" || col.collider.tag == "blue" || col.collider.tag == "green" || col.collider.tag == "yellow" 
             || col.collider.tag == "purple" || col.collider.tag == "orange")
 
