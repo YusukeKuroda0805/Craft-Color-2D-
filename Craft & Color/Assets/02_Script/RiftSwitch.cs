@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class RiftSwitch : MonoBehaviour {
 
-    [SerializeField] private GameObject ColorRift1,ColorRift2;        //　Inspectorから消したいオブジェクトを入れます
+    public GameObject ColorRift1,ColorRift2;        //　Inspectorから消したいオブジェクトを入れます
     [SerializeField] private string Color;
     public bool Reverse = false;
 
     private void Start()
     {
-        ColorRift2.gameObject.SetActive(false);
+        //ColorRift2.gameObject.SetActive(false);
     }
 
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.tag == Color) {
-            ColorRift2.gameObject.SetActive(true);
+            if (ColorRift2 != null) ColorRift2.gameObject.SetActive(true);
             if(ColorRift1!= null) ColorRift1.gameObject.SetActive(false);
             
         }
