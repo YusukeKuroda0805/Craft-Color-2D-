@@ -43,7 +43,7 @@ public class TitleSceneMove : MonoBehaviour {
 
     void GameEnd()
     {
-        //Application.Quit();
+        Application.Quit();
         Debug.Log("GameQuit");
     }
 }
